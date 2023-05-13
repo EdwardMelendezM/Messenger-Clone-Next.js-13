@@ -11,7 +11,7 @@ import AuthSocialButton from "./AuthSocialButton";
 type variant = 'LOGIN' | 'REGISTER'
 
 const AuthForm = () => {
-  const [variant, setVariant] = useState < variant>('LOGIN')
+  const [variant, setVariant] = useState <variant>('LOGIN')
   const [isLoading, setIsLoading] = useState(false);
   
   const toogleVariant = useCallback(()=>{
@@ -93,7 +93,7 @@ const AuthForm = () => {
           />
           <Input
             id="password"
-            label="Email address"
+            label="Password"
             type="password"
             register={register}
             errors={errors}
