@@ -3,12 +3,21 @@
 import useRoutes from "@/app/hooks/useRoutes";
 import { useState } from "react";
 import DesktopItem from "./DesktopItem";
+import { User } from "@prisma/client";
+import { signOut } from "next-auth/react";
 
-const DesktopSidebar = () => {
+interface DesktopSidebarProps{
+  currentUser:User | null
+}
+
+const DesktopSidebar:React.FC<DesktopSidebarProps> = ({
+  currentUser
+}) => {
   const routes = useRoutes()
   const [isOpen, setIsOpen] = useState(false);
 
-
+  console.log({currentUser});
+  
 
   return ( 
     <div
