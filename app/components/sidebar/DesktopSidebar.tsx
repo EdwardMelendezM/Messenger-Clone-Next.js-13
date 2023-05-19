@@ -4,10 +4,10 @@ import useRoutes from "@/app/hooks/useRoutes";
 import { useState } from "react";
 import DesktopItem from "./DesktopItem";
 import { User } from "@prisma/client";
-import { signOut } from "next-auth/react";
+import Avatar from "../Avatar";
 
 interface DesktopSidebarProps{
-  currentUser:User | null
+  currentUser:User
 }
 
 const DesktopSidebar:React.FC<DesktopSidebarProps> = ({
@@ -16,7 +16,7 @@ const DesktopSidebar:React.FC<DesktopSidebarProps> = ({
   const routes = useRoutes()
   const [isOpen, setIsOpen] = useState(false);
 
-  console.log({currentUser});
+  // console.log({currentUser});
   
 
   return ( 
@@ -65,6 +65,26 @@ const DesktopSidebar:React.FC<DesktopSidebarProps> = ({
           ))}
         </ul>
         
+      </nav>
+      <nav
+      className="
+        flex
+        mt-4
+        flex-col
+        justify-between
+        items-center
+      "
+      >
+        <div
+          onClick={()=>setIsOpen(true)}
+          className="
+            cursor-pointer
+            hover:opacity-75
+            transition
+          "
+        >
+          <Avatar user={currentUser} />
+        </div>
       </nav>
     </div>
    );
