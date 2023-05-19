@@ -16,5 +16,5 @@ const useConversation=()=>{
     isOpen,
     conversationId,
   }),[isOpen,conversationId])
-
 }
+export default useConversation
