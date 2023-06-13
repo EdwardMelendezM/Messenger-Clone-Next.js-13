@@ -27,7 +27,6 @@ const AuthForm = () => {
     }
   }, [session?.status, router])
 
-
   const toogleVariant = useCallback(()=>{
     if(variant==='LOGIN'){
       setVariant('REGISTER')
