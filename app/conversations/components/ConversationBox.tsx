@@ -42,10 +42,11 @@ const ConversationBox:React.FC<ConversationBoxProps> = ({
     if(!lastMessage){
       return false
     }
-    const seenArray = lastMessage.seen || [];
-    if(!userEmail){
+    if (!userEmail) {
       return false;
     }
+    const seenArray = lastMessage.seen || [];
+    
 
     return seenArray.filter((user)=>user.email===userEmail).length!==0;
 
