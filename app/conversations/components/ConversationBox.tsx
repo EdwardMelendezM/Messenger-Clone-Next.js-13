@@ -114,7 +114,7 @@ const ConversationBox:React.FC<ConversationBoxProps> = ({
             clsx(`
               truncate
               text-sm
-            `,hasSeen ?'text-gray-500':'text-black font-medium')
+            `,hasSeen ?'text-gray-500':'text-black font-mediumu')
           }>
             {lastMessageText}
           </p>
