@@ -2,7 +2,7 @@
 
 Proyect deployed https://messenger-clone-next-js-13.vercel.app/
 
-## Utils
+## Tools
  - NextJs 13
     - Next-auth
     - Next-cloudinary
