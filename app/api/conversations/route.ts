@@ -1,6 +1,7 @@
 import getCurrentUser from "@/app/actions/getCurrentUser";
 import { NextResponse } from "next/server";
 import prisma from '@/app/libs/prismadb';
+import { pusherServer } from "@/app/libs/pusher";
 
 export async function POST(request: Request){
   try {
@@ -50,6 +51,13 @@ export async function POST(request: Request){
           user:true
         }
       })
+
+      newConversation.user.forEach((_user)=>{
+        if(_user.email){
+          pusherServer.trigger(_user.email,'conversation:new',newConversation)
+        }
+      })
+
       //Retorno como json la nueva conversacion
       return NextResponse.json(newConversation);
     }
@@ -95,6 +103,13 @@ export async function POST(request: Request){
         user:true
       }
     })
+
+    newConversation.user.map((_user)=>{
+      if(_user.email){
+        pusherServer.trigger(_user.email,'conversation:new',newConversation)
+      }
+    })
+
 
     //Retornamos la nueva conversacion uno a uno
     return NextResponse.json(newConversation)
