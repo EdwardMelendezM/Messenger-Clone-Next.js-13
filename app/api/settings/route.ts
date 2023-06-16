@@ -7,6 +7,8 @@ export async function POST(
   request:Request
 ){
   try {
+    
+    //Obtenemos el usuario actual
     const currentUser = await getCurrentUser();
     const body = await request.json();
     const {
@@ -18,6 +20,7 @@ export async function POST(
       return new NextResponse('Unauthorized',{status:401})
     }
 
+    //Actualizamos el usuario
     const updateUser = await prisma.user.update({
       where:{
         id:currentUser.id

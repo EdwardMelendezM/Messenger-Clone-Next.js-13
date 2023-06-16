@@ -4,6 +4,7 @@ import getCurrentUser from "./getCurrentUser";
 const getConversationById = async(conversationId:string)=>{
 
   try {
+    //Obtener actual usuario
     const currentUser = await getCurrentUser();
     if(!currentUser?.email){
       return null;
@@ -14,7 +15,7 @@ const getConversationById = async(conversationId:string)=>{
         id:conversationId
       },
       include:{
-        user:true
+        users:true
       }
     })
     return conversation;

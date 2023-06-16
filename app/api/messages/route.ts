@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 
 import getCurrentUser from "@/app/actions/getCurrentUser";
+import { pusherServer } from '@/app/libs/pusher'
 import prisma from "@/app/libs/prismadb";
-import  { pusherServer } from '@/app/libs/pusher'
 
 export async function POST(
   request: Request,
@@ -56,7 +56,7 @@ export async function POST(
         }
       },
       include: {
-        user: true,
+        users: true,
         messages: {
           include: {
             seen: true
@@ -64,20 +64,21 @@ export async function POST(
         }
       }
     });
-    await pusherServer.trigger(conversationId,'messages:new',newMessage)
 
-    const lastMessage = updatedConversation.messages[updatedConversation.messages.length-1]
+    await pusherServer.trigger(conversationId, 'messages:new', newMessage);
 
-    updatedConversation.user.map((_user)=>{
-      pusherServer.trigger(_user.email!,'conversation:update',{
-        id:conversationId,
-        messages:[lastMessage]
-      })
-    })
+    const lastMessage = updatedConversation.messages[updatedConversation.messages.length - 1];
+
+    updatedConversation.users.map((user) => {
+      pusherServer.trigger(user.email!, 'conversation:update', {
+        id: conversationId,
+        messages: [lastMessage]
+      });
+    });
 
     return NextResponse.json(newMessage)
-  } catch (error:any) {
+  } catch (error) {
     console.log(error, 'ERROR_MESSAGES')
-    return new NextResponse(error, { status: 500 });
+    return new NextResponse('Error', { status: 500 });
   }
 }

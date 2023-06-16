@@ -1,41 +1,51 @@
 import { useEffect, useState } from "react";
-import useActiveList from "./useActiveList";
 import { pusherClient } from "../libs/pusher";
-import {Channel,Members } from 'pusher-js'
+import { Channel, Members } from "pusher-js";
+import useActiveList from "./useActiveList";
 
-const useActiveChannel =()=>{
-  const {set,add,remove} = useActiveList();
-  const [activeChannel,setActivChannel] = useState<Channel | null>(null);
+const useActiveChannel = () => {
 
-  useEffect(()=>{
+  // Obtenemos los members y sus metodos
+  const { set, add, remove } = useActiveList();
+  const [activeChannel, setActiveChannel] = useState<Channel | null>(null);
+
+  useEffect(() => {
     let channel = activeChannel;
-    if(!channel){
+
+    if (!channel) {
+      //Si no existe un canal lo creamos y lo almacenanos en activeChannel
       channel = pusherClient.subscribe('presence-messenger');
-      setActivChannel(channel)
+      setActiveChannel(channel);
     }
 
-    channel.bind('pusher:subcription_succeeded',(members:Members)=>{
-      const initialMembers :string[]=[]
-      members.each((member:Record<string,any>)=>initialMembers.push(member.id))
-      set(initialMembers)
-    })
+    // El evento se dispara cuando la suscripcion al canal ha sido exitosa
+    // Creamos una lista de miembros como lista vacia
+    // Agregamos a todos los id de los miembros y actualizamos con el set
+    channel.bind("pusher:subscription_succeeded", (members: Members) => {
+      const initialMembers: string[] = [];
 
-    channel.bind('pusher:member_added',(member:Record<string,any>)=>{
+      members.each((member: Record<string, any>) => initialMembers.push(member.id));
+      set(initialMembers);
+    });
+
+    // Este evento llamado pusher:member_added se dispara cuando un miembro se une al canal de precencia
+    channel.bind("pusher:member_added", (member: Record<string, any>) => {
       add(member.id)
-    })
+    });
 
-    channel.bind('pusher:member_removed',(member:Record<string,any>)=>{
-      remove(member.id)
-    })
+    // Este evento se dispara cuando un miembro se retira de un canal
+    channel.bind("pusher:member_removed", (member: Record<string, any>) => {
+      remove(member.id);
+    });
 
-    return ()=>{
-      if(activeChannel){
+    //Esto se ejecuta cuando el componente se actualize o desmonte
+    return () => {
+      if (activeChannel) {
         pusherClient.unsubscribe('presence-messenger');
-        setActivChannel(null);
+        setActiveChannel(null);
       }
     }
-
-  },[activeChannel,set,add,remove])
+  }, [activeChannel, set, add, remove]);
 }
 
 export default useActiveChannel;

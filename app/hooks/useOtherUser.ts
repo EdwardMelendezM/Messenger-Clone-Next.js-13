@@ -1,10 +1,10 @@
 import { useSession } from "next-auth/react";
 import { useMemo } from "react";
-import { FullConversationType } from "../types";
 import { User } from "@prisma/client";
+import { FullConversationType } from "../types";
 
 const useOtherUser = (conversation: FullConversationType | {
-  user: User[]
+  users: User[]
 }) => { 
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const session = useSession();
@@ -12,11 +12,11 @@ const useOtherUser = (conversation: FullConversationType | {
   const otherUser = useMemo(() => {
     const currentUserEmail = session?.data?.user?.email;
 
-    const otherUser = conversation.user.filter((_user) => _user.email !== currentUserEmail)
+    const otherUser = conversation.users.filter((user) => user.email !== currentUserEmail)
 
     return otherUser[0];
 
-  }, [session?.data?.user?.email, conversation.user])
+  }, [session?.data?.user?.email, conversation.users])
   return otherUser;
 }
 

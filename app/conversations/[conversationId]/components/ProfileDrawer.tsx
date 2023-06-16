@@ -15,7 +15,7 @@ import useActiveList from "@/app/hooks/useActiveList";
 interface ProfileDrawerProps{
   isOpen:boolean;
   onClose:()=>void;
-  data:Conversation & { user: User[]}
+  data:Conversation & { users: User[]}
 }
 const ProfileDrawer:React.FC<ProfileDrawerProps> = ({
   isOpen,
@@ -37,7 +37,7 @@ const ProfileDrawer:React.FC<ProfileDrawerProps> = ({
 
   const statusText = useMemo(()=>{
     if(data.isGroup){
-      return `${data.user.length} members`
+      return `${data.users.length} members`
     }
     return isActive ? 'Active' : 'Offline'
   }, [data, isActive])
@@ -71,7 +71,7 @@ const ProfileDrawer:React.FC<ProfileDrawerProps> = ({
             <div className="
               absolute
               inset-0
-              overflow-hidden
+              overflow-hiddenS
             ">
               <div className="
                 pointer-events-none
@@ -163,7 +163,7 @@ const ProfileDrawer:React.FC<ProfileDrawerProps> = ({
                           <div className="mb-2">
                             {
                               data.isGroup 
-                                ? <AvatarGroup users={data.user} />
+                                ? <AvatarGroup users={data.users} />
                                 : <Avatar user={otherUser} />
                             }
                           </div>
@@ -242,7 +242,7 @@ const ProfileDrawer:React.FC<ProfileDrawerProps> = ({
                                   sm:col-span-2
                                   ">
                                     {
-                                      data.user.map((user)=>user.email).join(', ')
+                                      data.users.map((user)=>user.email).join(', ')
                                     }
 
                                   </dd>

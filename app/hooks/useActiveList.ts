@@ -1,17 +1,18 @@
-import { create } from "zustand";
+import { create } from 'zustand'
 
-interface ActiveListStore{
-  members:string[];
-  add:(id:string)=>void;
-  remove:(id:string)=>void;
-  set:(ids:string[])=>void;
+interface ActiveListStore {
+  members: string[];
+  add: (id: string) => void;
+  remove: (id: string) => void;
+  set: (ids: string[]) => void;
 }
 
-const useActiveList = create<ActiveListStore> ((set)=>({
-  members:[],
-  add:(id)=>set((state)=>({members:[...state.members,id]})),
-  remove: (id) => set((state) => ({ members: state.members.filter((memberId) => memberId !==id) })),
-  set:(ids)=>set({members:ids})
-}))
+// Creamos con zustand los members como lista, donde hacemos add, remove y set
+const useActiveList = create<ActiveListStore>((set) => ({
+  members: [],
+  add: (id) => set((state) => ({ members: [...state.members, id] })),
+  remove: (id) => set((state) => ({ members: state.members.filter((memberId) => memberId !== id) })),
+  set: (ids) => set({ members: ids })
+}));
 
 export default useActiveList;

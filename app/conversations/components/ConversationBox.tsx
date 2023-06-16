@@ -84,7 +84,7 @@ const ConversationBox:React.FC<ConversationBoxProps> = ({
     >
       {
         data.isGroup ? (
-          <AvatarGroup users={data.user} />
+          <AvatarGroup users={data.users} />
         )
           : <Avatar user={otherUser} />
       }
@@ -106,14 +106,14 @@ const ConversationBox:React.FC<ConversationBoxProps> = ({
             >{data.name || otherUser.name}
             </p>
             {
-              lastMessage?.createAt &&(
+              lastMessage?.createdAt &&(
                 <p
                 className='
                   text-xs
                   text-gray-400
                   font-light
                 '>
-                  {format(new Date(lastMessage.createAt),'p')}
+                  {format(new Date(lastMessage.createdAt),'p')}
                 </p>
               )
             }
